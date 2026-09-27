@@ -18,7 +18,7 @@ fields:
           field:
             type: button_group
             display: 'HTML tag'
-            instructions: 'Heading level, which also sets its size. Empty uses the block default (H1 for a hero, H2 otherwise). Keep one H1 per page.'
+            instructions: 'Keep one H1 per page.'
             width: 33
             clearable: true
             options:

@@ -142,14 +142,20 @@ async function fetchSet(type) {
             'X-Requested-With': 'XMLHttpRequest',
             'X-CSRF-TOKEN': csrf(),
         },
+        // Statamic identifies the blueprint with a signed `token` since 6.3x, and with its
+        // handle (`blueprint`, e.g. collections.pages.page) before. Each ignores the other key.
         body: JSON.stringify({
             token: unref(ctx.blueprint)?.token,
+            blueprint: unref(ctx.blueprint)?.fqh,
             reference: unref(ctx.reference),
             field,
             set: type,
         }),
     });
-    if (!response.ok) throw new Error(`Could not load set "${type}"`);
+    if (!response.ok) {
+        const reason = await response.json().then((r) => r.message).catch(() => response.statusText);
+        throw new Error(`Could not load set "${type}": ${reason}`);
+    }
     return response.json();
 }
 
