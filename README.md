@@ -1,6 +1,6 @@
 # Fine Builder
 
-> Fine Builder is a Statamic page builder with visual editing. Pages are built from blocks, and editors work on the page itself in Live Preview, the way they would in Elementor, Wix or Webflow.
+> Fine Builder is a Statamic page builder with visual editing. Pages are built from blocks, and editors work on the page itself in Live Preview.
 
 **Requires** PHP 8.3+ and Statamic 6.
 
