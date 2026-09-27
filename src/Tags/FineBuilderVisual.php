@@ -5,17 +5,22 @@ namespace AliAwwad\FineBuilder\Tags;
 use Statamic\Tags\Tags;
 
 /**
- * Markup hooks for visual editing. Every method outputs nothing outside Live Preview,
- * so the public site stays clean.
+ * Markup hooks for visual editing, as {{ fbv:... }} (or the long {{ fine_builder_visual:... }}).
+ * Every method outputs nothing outside Live Preview, so the public site stays clean.
  *
- *   {{ fine_builder_visual:root }}                         on the element wrapping the builder loop
- *   {{ fine_builder_visual:attrs :id="id" :type="type" }}  on each set's wrapper (edit="..." for reusable blocks)
- *   {{ fine_builder_visual:field path="heading.text" }}    on an inline-editable text element
- *   {{ fine_builder_visual:open path="image" }}            on an element whose click opens that field in the form
- *   {{ fine_builder_visual:script }}                       before </body> (only when fine-builder.inject_overlay is off)
+ *   {{ fbv:root }}                         on the element wrapping the builder loop
+ *   {{ fbv:attrs :id="id" :type="type" }}  on each set's wrapper (edit="..." for reusable blocks)
+ *   {{ fbv:field path="heading.text" }}    on an inline-editable text element (multiline="true" for textareas)
+ *   {{ fbv:open path="image" }}            on an element whose click opens that field in the form
+ *   {{ fbv:script }}                       before </body> (only when fine-builder.inject_overlay is off)
+ *
+ * Paths are relative to the set: "items.{index}.title" inside a grid loop. prefix="..." prepends
+ * a path, for partials rendering data nested in the set.
  */
 class FineBuilderVisual extends Tags
 {
+    protected static $aliases = ['fbv'];
+
     public function root(): string
     {
         return $this->live() ? ' data-fbv-root' : '';

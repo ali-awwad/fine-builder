@@ -62,4 +62,12 @@ class FineBuilderVisualTagTest extends TestCase
 
         $this->assertSame(' data-fbv-open="&quot;&gt;&lt;x"', $this->render('{{ fine_builder_visual:open :path="p" }}', ['p' => '"><x']));
     }
+
+    #[Test]
+    public function fbv_is_a_short_alias(): void
+    {
+        $this->fakeLivePreview();
+
+        $this->assertSame(' data-fbv-field="title"', $this->render('{{ fbv:field path="title" }}'));
+    }
 }

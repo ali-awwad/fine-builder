@@ -3,7 +3,7 @@
     <div class="mx-auto max-w-6xl px-6">
         {{ partial:sets/common/heading }}
         {{ if style == 'grid' }}
-            <div{{ fine_builder_visual:open path="images" }} class="mt-10 grid grid-cols-2 gap-4 md:grid-cols-3">
+            <div{{ fbv:open path="images" }} class="mt-10 grid grid-cols-2 gap-4 md:grid-cols-3">
                 {{ images }}
                     <figure class="overflow-hidden rounded-xl bg-zinc-100">
                         <img src="{{ url }}" alt="{{ alt }}" loading="lazy" class="aspect-4/3 size-full object-cover">
@@ -11,7 +11,7 @@
                 {{ /images }}
             </div>
         {{ else }}
-            <div{{ fine_builder_visual:open path="images" }} class="-mx-6 mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-4" tabindex="0" aria-label="{{ heading:text ?? 'Image carousel' }}">
+            <div{{ fbv:open path="images" }} class="-mx-6 mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-4" tabindex="0" aria-label="{{ heading:text ?? 'Image carousel' }}">
                 {{ images }}
                     <figure class="w-4/5 shrink-0 snap-start overflow-hidden rounded-xl bg-zinc-100 sm:w-1/2 lg:w-1/3">
                         <img src="{{ url }}" alt="{{ alt }}" loading="lazy" class="aspect-4/3 size-full object-cover">

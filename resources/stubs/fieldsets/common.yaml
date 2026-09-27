@@ -14,17 +14,20 @@ fields:
             display: Text
             width: 66
         -
-          handle: size
+          handle: tag
           field:
             type: button_group
-            display: Size
-            default: lg
+            display: 'HTML tag'
+            instructions: 'Heading level, which also sets its size. Empty uses the block default (H1 for a hero, H2 otherwise). Keep one H1 per page.'
             width: 33
+            clearable: true
             options:
-              sm: Small
-              md: Medium
-              lg: Large
-              xl: Extra Large
+              h1: H1
+              h2: H2
+              h3: H3
+              h4: H4
+              h5: H5
+              h6: H6
         -
           handle: subheading
           field:
@@ -36,6 +39,7 @@ fields:
           field:
             type: button_group
             display: Alignment
+            instructions: 'Aligns the whole heading: text and subheading.'
             default: start
             width: 33
             options:

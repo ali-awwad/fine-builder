@@ -9,13 +9,13 @@
         {{ buttons }}
             {{ if type == 'button' }}
                 {{ if html_tag == 'button' || html_tag == 'submit' }}
-                    <button type="{{ html_tag == 'submit' ? 'submit' : 'button' }}"{{ fine_builder_visual:open :prefix="fbv_prefix" path="buttons.{index}" }}
+                    <button type="{{ html_tag == 'submit' ? 'submit' : 'button' }}"{{ fbv:open :prefix="fbv_prefix" path="buttons.{index}" }}
                 {{ else }}
-                    <a href="{{ link }}"{{ fine_builder_visual:open :prefix="fbv_prefix" path="buttons.{index}" }}{{ if target_blank }} target="_blank" rel="noopener noreferrer"{{ /if }}
+                    <a href="{{ link }}"{{ fbv:open :prefix="fbv_prefix" path="buttons.{index}" }}{{ if target_blank }} target="_blank" rel="noopener noreferrer"{{ /if }}
                 {{ /if }}
                     class="inline-flex items-center gap-2 rounded-full font-medium transition focus-visible:outline-2 focus-visible:outline-offset-2 {{ if size == 'sm' }}px-3 py-1.5 text-sm{{ elseif size == 'lg' }}px-6 py-3 text-lg{{ else }}px-4 py-2.5 text-base{{ /if }} {{ if color == 'destructive' }}bg-red-600 text-white hover:bg-red-700{{ elseif color == 'outline' }}ring-1 ring-current ring-inset hover:bg-current/10{{ elseif tone == 'light' }}bg-amber-300 text-zinc-950 hover:bg-amber-200{{ else }}bg-zinc-950 text-white hover:bg-zinc-800{{ /if }}">
                     {{ if icon }}<span class="size-5 shrink-0 [&>svg]:size-full" aria-hidden="true">{{ icon }}</span>{{ /if }}
-                    <span{{ fine_builder_visual:field :prefix="fbv_prefix" path="buttons.{index}.label" }}>{{ label }}</span>
+                    <span{{ fbv:field :prefix="fbv_prefix" path="buttons.{index}.label" }}>{{ label }}</span>
                 {{ if html_tag == 'button' || html_tag == 'submit' }}</button>{{ else }}</a>{{ /if }}
             {{ /if }}
         {{ /buttons }}

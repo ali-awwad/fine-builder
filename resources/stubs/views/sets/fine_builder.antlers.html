@@ -10,19 +10,19 @@
     The wrapper stays even without blocks, so Live Preview can offer "Add block" on an empty
     page. The data-fbv-* attributes appear only in Live Preview.
 #}}
-<div{{ fine_builder_visual:root }}>
+<div{{ fbv:root }}>
     {{ fine_builder }}
         {{ if type == 'block' }}
             {{# "entry" is a single entry (max_items: 1). Looping into it makes its fields
                 (heading, buttons, ...) the current context. Don't add scope="..." here:
                 the scope modifier only accepts arrays and throws on a single entry. #}}
-            <div{{ fine_builder_visual:attrs :id="id" :type="type" :edit="entry:edit_url" }}>
+            <div{{ fbv:attrs :id="id" :type="type" :edit="entry:edit_url" }}>
                 {{ entry }}
                     {{ partial:if_exists src="sets/blocks/{blueprint:handle}" }}
                 {{ /entry }}
             </div>
         {{ else }}
-            <div{{ fine_builder_visual:attrs :id="id" :type="type" }}>
+            <div{{ fbv:attrs :id="id" :type="type" }}>
                 {{ partial:if_exists src="sets/blocks/{type}" }}
             </div>
         {{ /if }}

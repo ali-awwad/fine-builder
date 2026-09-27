@@ -10,6 +10,7 @@
 
 - A `fine_builder` Replicator with ready-made blocks: Hero, Carousel, Content, Custom HTML, Features, Stats, Speakers, Pricing and CTA.
 - Shared "common" fields (heading, buttons, content, custom HTML) that every block reuses, so a change to buttons happens once.
+- Headings let editors choose their HTML tag (H1–H6), which also sets their size, so the page outline stays right for SEO. Alignment applies to the whole heading.
 - Reusable blocks: a **Blocks** collection whose entries can be inserted on any page with the "Block" set.
 - One name ties each block together: fieldset `block_<name>`, set `<name>`, Blocks blueprint `<name>` and template `sets/blocks/<name>`.
 - A `themeicons` icon set for icon fields.
@@ -91,16 +92,23 @@ Installing never overwrites your files, and never changes your `fine_builder.yam
 
 ## Making your own templates editable
 
-The visual editing hooks output nothing outside Live Preview:
+`fbv` is short for `fine_builder_visual`; both names work. The hooks output nothing outside Live Preview:
 
 ```antlers
-<div{{ fine_builder_visual:root }}>                       {{# wraps the builder loop (already in sets/fine_builder) #}}
-<div{{ fine_builder_visual:attrs :id="id" :type="type" }}> {{# wraps each set #}}
-<h2{{ fine_builder_visual:field path="heading.text" }}>    {{# text edited in place #}}
-<img{{ fine_builder_visual:open path="image" }} ...>        {{# click opens the field #}}
+<div{{ fbv:root }}>                       {{# wraps the builder loop (already in sets/fine_builder) #}}
+<div{{ fbv:attrs :id="id" :type="type" }}> {{# wraps each set #}}
+<h2{{ fbv:field path="heading.text" }}>    {{# text edited in place #}}
+<img{{ fbv:open path="image" }} ...>        {{# click opens the field #}}
 ```
 
 `path` is the field's path inside the set, for example `items.{index}.title` inside a grid loop. Add `multiline="true"` for textareas. Partials that render nested data take a `prefix`, as the buttons partial does with `fbv_prefix`.
+
+Most blocks only need the shared partials, which already contain the hooks:
+
+```antlers
+{{ partial:sets/common/heading }}                          {{# tag="h1" makes H1 the default level #}}
+{{ partial:sets/common/buttons :align="heading:alignment" }}
+```
 
 ## Configuration
 
@@ -110,7 +118,7 @@ php artisan vendor:publish --tag=fine-builder-config
 
 - `field`: the builder fieldset/field handle (default `fine_builder`).
 - `template`: the template assigned when the builder is enabled on a collection.
-- `inject_overlay`: adds the visual editing script to Live Preview pages automatically. Turn it off to place `{{ fine_builder_visual:script }}` in your layout yourself.
+- `inject_overlay`: adds the visual editing script to Live Preview pages automatically. Turn it off to place `{{ fbv:script }}` in your layout yourself.
 
 ## Security
 

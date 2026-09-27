@@ -5,6 +5,7 @@ namespace AliAwwad\FineBuilder\Tests\Views;
 use AliAwwad\FineBuilder\Actions\InstallBuilderFiles;
 use AliAwwad\FineBuilder\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use Statamic\Fields\LabeledValue;
 
 class BuilderTemplateTest extends TestCase
 {
@@ -51,5 +52,20 @@ class BuilderTemplateTest extends TestCase
         $html = view('fine_builder', ['content' => 'Old body', 'fine_builder' => $this->stats()])->render();
         $this->assertStringNotContainsString('Old body', $html);
         $this->assertStringContainsString('Numbers', $html);
+    }
+
+    #[Test]
+    public function the_heading_tag_sets_level_and_size_and_falls_back_to_the_block_default(): void
+    {
+        $this->fakeLivePreview(false);
+        $render = fn (array $heading, array $params = []) => view('sets.common.heading', ['heading' => $heading] + $params)->render();
+
+        // Button groups augment to LabeledValue, empty when the editor leaves the level unset.
+        $this->assertMatchesRegularExpression('/<h3 class="[^"]*text-2xl/', $render(['text' => 'Hi', 'tag' => new LabeledValue('h3', 'H3')]));
+        $this->assertMatchesRegularExpression('/<h1 class/', $render(['text' => 'Hi', 'tag' => new LabeledValue(null, null)], ['tag' => 'h1']));
+        $this->assertMatchesRegularExpression('/<h2 class="[^"]*text-3xl sm:text-4xl[^"]*">\s*Hi\s*<\/h2>/', $render(['text' => 'Hi']));
+        $this->assertMatchesRegularExpression('/<h1 class="[^"]*text-5xl/', $render(['text' => 'Hi'], ['tag' => 'h1']));
+        $this->assertMatchesRegularExpression('/<h4 class="[^"]*text-xl sm:text-2xl/', $render(['text' => 'Hi', 'tag' => new LabeledValue('h4', 'H4')], ['tag' => 'h1']));
+        $this->assertStringContainsString('mx-auto text-center', $render(['text' => 'Hi', 'subheading' => 'Sub', 'alignment' => 'center']));
     }
 }
