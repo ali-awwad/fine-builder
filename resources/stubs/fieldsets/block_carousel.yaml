@@ -1,0 +1,25 @@
+title: 'Block Carousel'
+fields:
+  -
+    handle: heading
+    field: common.heading
+  -
+    handle: images
+    field:
+      type: assets
+      display: Images
+      container: assets
+      validate:
+        - required
+  -
+    handle: style
+    field:
+      type: button_group
+      display: Style
+      default: carousel
+      options:
+        carousel: Carousel
+        grid: Grid
+  -
+    handle: buttons
+    field: common.buttons

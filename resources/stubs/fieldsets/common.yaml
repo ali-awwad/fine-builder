@@ -1,0 +1,146 @@
+title: Common
+fields:
+  -
+    handle: heading
+    field:
+      type: group
+      display: Heading
+      fullscreen: false
+      fields:
+        -
+          handle: text
+          field:
+            type: text
+            display: Text
+            width: 66
+        -
+          handle: size
+          field:
+            type: button_group
+            display: Size
+            default: lg
+            width: 33
+            options:
+              sm: Small
+              md: Medium
+              lg: Large
+              xl: Extra Large
+        -
+          handle: subheading
+          field:
+            type: textarea
+            display: Subheading
+            width: 66
+        -
+          handle: alignment
+          field:
+            type: button_group
+            display: Alignment
+            default: start
+            width: 33
+            options:
+              start: Start
+              center: Center
+              end: End
+  -
+    handle: buttons
+    field:
+      type: replicator
+      display: Buttons
+      collapse: true
+      previews: true
+      sets:
+        main:
+          display: Main
+          sets:
+            button:
+              display: Button
+              fields:
+                -
+                  handle: label
+                  field:
+                    type: text
+                    display: Label
+                    width: 50
+                    validate:
+                      - required
+                -
+                  handle: link
+                  field:
+                    type: link
+                    display: Link
+                    width: 50
+                -
+                  handle: html_tag
+                  field:
+                    type: button_group
+                    display: 'HTML Tag'
+                    default: a
+                    width: 50
+                    options:
+                      a: Link
+                      button: Button
+                      submit: Submit
+                -
+                  handle: target_blank
+                  field:
+                    type: toggle
+                    display: 'Open in new tab'
+                    width: 50
+                    if:
+                      html_tag: 'equals a'
+                -
+                  handle: size
+                  field:
+                    type: button_group
+                    display: Size
+                    default: md
+                    width: 50
+                    options:
+                      sm: Small
+                      md: Medium
+                      lg: Large
+                -
+                  handle: color
+                  field:
+                    type: button_group
+                    display: Color
+                    default: primary
+                    width: 50
+                    options:
+                      primary: Primary
+                      destructive: Destructive
+                      outline: Outline
+                -
+                  handle: icon
+                  field:
+                    type: icon
+                    display: Icon
+                    set: themeicons
+                    width: 50
+  -
+    handle: content
+    field:
+      type: bard
+      display: Content
+      buttons:
+        - h2
+        - h3
+        - bold
+        - italic
+        - unorderedlist
+        - orderedlist
+        - quote
+        - anchor
+        - image
+      container: assets
+      save_html: false
+      remove_empty_nodes: trim
+  -
+    handle: custom_html
+    field:
+      type: code
+      display: 'Custom HTML'
+      mode: htmlmixed
+      mode_selectable: false
+      instructions: 'Rendered as-is on the page. Only trusted editors should use this.'

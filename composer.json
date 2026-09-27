@@ -1,0 +1,47 @@
+{
+    "name": "ali-awwad/fine-builder",
+    "description": "Statamic Fine Builder addon: a conventions-first page builder with visual editing in Live Preview",
+    "license": "MIT",
+    "keywords": [
+        "statamic",
+        "page builder",
+        "visual editing",
+        "ali awwad",
+        "laravel"
+    ],
+    "autoload": {
+        "psr-4": {
+            "AliAwwad\\FineBuilder\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "AliAwwad\\FineBuilder\\Tests\\": "tests"
+        }
+    },
+    "require": {
+        "php": "^8.3",
+        "statamic/cms": "^6.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^10.0"
+    },
+    "config": {
+        "allow-plugins": {
+            "pixelfear/composer-dist-plugin": true
+        }
+    },
+    "extra": {
+        "statamic": {
+            "name": "Statamic Fine Builder",
+            "description": "Page builder with visual editing in Live Preview"
+        },
+        "laravel": {
+            "providers": [
+                "AliAwwad\\FineBuilder\\ServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

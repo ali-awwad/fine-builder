@@ -1,0 +1,5 @@
+title: 'Block Content'
+fields:
+  -
+    handle: content
+    field: common.content

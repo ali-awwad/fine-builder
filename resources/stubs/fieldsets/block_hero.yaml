@@ -1,0 +1,27 @@
+title: 'Block Hero'
+fields:
+  -
+    handle: heading
+    field: common.heading
+  -
+    handle: buttons
+    field: common.buttons
+  -
+    handle: image
+    field:
+      type: assets
+      display: Image
+      container: assets
+      max_files: 1
+      width: 50
+  -
+    handle: background_video
+    field:
+      type: assets
+      display: 'Background Video'
+      instructions: 'Optional MP4/WebM. Plays muted and looped behind the heading; the image is used as the poster.'
+      container: assets
+      max_files: 1
+      width: 50
+      validate:
+        - 'mimetypes:video/mp4,video/webm'

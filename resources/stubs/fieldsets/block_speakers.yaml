@@ -1,0 +1,43 @@
+title: 'Block Speakers'
+fields:
+  -
+    handle: heading
+    field: common.heading
+  -
+    handle: speakers
+    field:
+      type: grid
+      display: Speakers
+      mode: stacked
+      add_row: 'Add speaker'
+      fields:
+        -
+          handle: name
+          field:
+            type: text
+            display: Name
+            width: 50
+            validate:
+              - required
+        -
+          handle: role
+          field:
+            type: text
+            display: 'Role & company'
+            width: 50
+        -
+          handle: talk
+          field:
+            type: text
+            display: 'Talk title'
+        -
+          handle: photo
+          field:
+            type: assets
+            display: Photo
+            instructions: 'Optional. Initials are shown when empty.'
+            container: assets
+            max_files: 1
+  -
+    handle: buttons
+    field: common.buttons

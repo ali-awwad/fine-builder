@@ -1,0 +1,8 @@
+title: 'Block CTA'
+fields:
+  -
+    handle: heading
+    field: common.heading
+  -
+    handle: buttons
+    field: common.buttons

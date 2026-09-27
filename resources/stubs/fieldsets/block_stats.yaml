@@ -1,0 +1,23 @@
+title: 'Block Stats'
+fields:
+  -
+    handle: heading
+    field: common.heading
+  -
+    handle: stats
+    field:
+      type: grid
+      display: Stats
+      mode: table
+      add_row: 'Add stat'
+      fields:
+        -
+          handle: value
+          field:
+            type: text
+            display: Value
+        -
+          handle: label
+          field:
+            type: text
+            display: Label

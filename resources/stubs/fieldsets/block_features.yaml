@@ -1,0 +1,34 @@
+title: 'Block Features'
+fields:
+  -
+    handle: heading
+    field: common.heading
+  -
+    handle: items
+    field:
+      type: grid
+      display: Items
+      mode: stacked
+      add_row: 'Add item'
+      fields:
+        -
+          handle: icon
+          field:
+            type: icon
+            display: Icon
+            set: themeicons
+            width: 33
+        -
+          handle: title
+          field:
+            type: text
+            display: Title
+            width: 66
+        -
+          handle: text
+          field:
+            type: textarea
+            display: Text
+  -
+    handle: buttons
+    field: common.buttons

@@ -1,0 +1,32 @@
+{{#
+    Fine Builder renderer.
+    Each set renders resources/views/sets/blocks/{type}.antlers.html.
+    The "block" set points at an entry in the Blocks collection; that entry is rendered
+    with the partial named after its blueprint (hero, carousel, ...), so a reusable block
+    and an inline set of the same type share one template.
+#}}
+<main{{ fine_builder_visual:root }}>
+    {{# Optional per-collection intro (event date, speaker photo...) above the blocks. #}}
+    {{ partial:if_exists src="headers/{collection:handle}" }}
+    {{ if fine_builder }}
+        {{ fine_builder }}
+            {{# The wrapper's data-fbv-* attributes (Live Preview only) power visual editing. #}}
+            {{ if type == 'block' }}
+                {{# "entry" is a single entry (max_items: 1). Looping into it makes its fields
+                    (heading, buttons, ...) the current context. Don't add scope="..." here:
+                    the scope modifier only accepts arrays and throws on a single entry. #}}
+                <div{{ fine_builder_visual:attrs :id="id" :type="type" :edit="entry:edit_url" }}>
+                    {{ entry }}
+                        {{ partial:if_exists src="sets/blocks/{blueprint:handle}" }}
+                    {{ /entry }}
+                </div>
+            {{ else }}
+                <div{{ fine_builder_visual:attrs :id="id" :type="type" }}>
+                    {{ partial:if_exists src="sets/blocks/{type}" }}
+                </div>
+            {{ /if }}
+        {{ /fine_builder }}
+    {{ else }}
+        <div class="mx-auto max-w-3xl px-6 py-16">{{ content }}</div>
+    {{ /if }}
+</main>

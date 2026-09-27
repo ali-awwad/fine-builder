@@ -1,0 +1,44 @@
+title: 'Block Pricing'
+fields:
+  -
+    handle: heading
+    field: common.heading
+  -
+    handle: tiers
+    field:
+      type: grid
+      display: Tiers
+      mode: stacked
+      add_row: 'Add tier'
+      fields:
+        -
+          handle: name
+          field:
+            type: text
+            display: Name
+            width: 33
+        -
+          handle: price
+          field:
+            type: text
+            display: Price
+            width: 33
+        -
+          handle: featured
+          field:
+            type: toggle
+            display: Featured
+            width: 33
+        -
+          handle: description
+          field:
+            type: text
+            display: Description
+        -
+          handle: perks
+          field:
+            type: list
+            display: Perks
+        -
+          handle: buttons
+          field: common.buttons

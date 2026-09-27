@@ -1,0 +1,87 @@
+title: 'Fine Builder'
+fields:
+  -
+    handle: fine_builder
+    field:
+      type: replicator
+      display: 'Fine Builder'
+      instructions: 'Build the page from blocks. Use "Block" to insert a reusable block from the Blocks collection.'
+      collapse: true
+      previews: true
+      sets:
+        blocks:
+          display: Blocks
+          sets:
+            hero:
+              display: Hero
+              instructions: 'Large heading with buttons, image and optional background video.'
+              fields:
+                -
+                  import: block_hero
+            carousel:
+              display: Carousel
+              instructions: 'Images as a swipeable carousel or a grid.'
+              fields:
+                -
+                  import: block_carousel
+            content:
+              display: Content
+              instructions: 'Rich text.'
+              fields:
+                -
+                  import: block_content
+            custom_html:
+              display: 'Custom HTML'
+              instructions: 'Raw HTML embed.'
+              fields:
+                -
+                  import: block_custom_html
+            features:
+              display: 'Features'
+              instructions: 'Icon cards in a grid.'
+              fields:
+                -
+                  import: block_features
+            stats:
+              display: 'Stats'
+              instructions: 'Big numbers with labels.'
+              fields:
+                -
+                  import: block_stats
+            speakers:
+              display: 'Speakers'
+              instructions: 'Speaker cards with name, role and talk.'
+              fields:
+                -
+                  import: block_speakers
+            pricing:
+              display: 'Pricing'
+              instructions: 'Ticket tiers with perks and buttons.'
+              fields:
+                -
+                  import: block_pricing
+            cta:
+              display: 'Call to action'
+              instructions: 'Centered heading with buttons on a dark band.'
+              fields:
+                -
+                  import: block_cta
+        reusable:
+          display: Reusable
+          sets:
+            block:
+              display: Block
+              instructions: 'Insert a reusable block from the Blocks collection.'
+              fields:
+                -
+                  handle: entry
+                  field:
+                    type: entries
+                    display: Block
+                    collections:
+                      - blocks
+                    max_items: 1
+                    mode: select
+                    create: true
+                    validate:
+                      - required

@@ -1,0 +1,21 @@
+{{# Hero — fields from block_hero: heading, buttons, image, background_video. Always dark: media, or an ambient gradient when none is set. #}}
+<section class="relative isolate overflow-hidden bg-zinc-950">
+    {{ if background_video }}
+        <video class="absolute inset-0 -z-10 size-full object-cover" autoplay muted loop playsinline{{ if image }} poster="{{ image:url }}"{{ /if }}>
+            <source src="{{ background_video:url }}" type="{{ background_video:mime_type }}">
+        </video>
+        <div class="absolute inset-0 -z-10 bg-zinc-950/60" aria-hidden="true"></div>
+    {{ elseif image }}
+        <img src="{{ image:url }}" alt="{{ image:alt }}" class="absolute inset-0 -z-10 size-full object-cover">
+        <div class="absolute inset-0 -z-10 bg-zinc-950/60" aria-hidden="true"></div>
+    {{ else }}
+        <div class="absolute inset-0 -z-10 bg-[radial-gradient(60%_60%_at_20%_0%,rgba(252,211,77,0.18),transparent),radial-gradient(50%_50%_at_90%_30%,rgba(129,140,248,0.18),transparent)]" aria-hidden="true"></div>
+        <div class="absolute inset-0 -z-10 bg-[linear-gradient(to_right,rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_75%)]" aria-hidden="true"></div>
+    {{ /if }}
+    <div class="mx-auto max-w-6xl px-6 py-28 sm:py-40">
+        {{ partial:sets/common/heading tag="h1" tone="light" }}
+        <div class="text-white">
+            {{ partial:sets/common/buttons :align="heading:alignment" tone="light" }}
+        </div>
+    </div>
+</section>

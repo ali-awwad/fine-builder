@@ -1,0 +1,5 @@
+title: 'Block Custom HTML'
+fields:
+  -
+    handle: custom_html
+    field: common.custom_html

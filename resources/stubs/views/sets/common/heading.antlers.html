@@ -1,0 +1,17 @@
+{{#
+    Renders the common.heading group.
+    Params: tag (h1|h2|h3, default h2), tone (dark|light, default dark — use light on dark backgrounds),
+            fbv_prefix (path of the heading inside the set for visual editing, when not top-level).
+#}}
+{{ if heading:text || heading:subheading }}
+    <header class="max-w-3xl {{ if heading:alignment == 'center' }}mx-auto text-center{{ elseif heading:alignment == 'end' }}ml-auto text-right{{ else }}text-left{{ /if }}">
+        {{ if heading:text }}
+            <{{ tag ?? 'h2' }} class="font-display font-normal tracking-tight text-balance {{ if heading:size == 'sm' }}text-xl sm:text-2xl{{ elseif heading:size == 'md' }}text-2xl sm:text-3xl{{ elseif heading:size == 'xl' }}text-5xl sm:text-7xl{{ else }}text-3xl sm:text-4xl{{ /if }} {{ if tone == 'light' }}text-white{{ else }}text-zinc-950{{ /if }}"{{ fine_builder_visual:field :prefix="fbv_prefix" path="heading.text" }}>
+                {{ heading:text }}
+            </{{ tag ?? 'h2' }}>
+        {{ /if }}
+        {{ if heading:subheading }}
+            <p class="mt-4 text-lg/8 text-pretty {{ if tone == 'light' }}text-white/80{{ else }}text-zinc-500{{ /if }}"{{ fine_builder_visual:field :prefix="fbv_prefix" path="heading.subheading" multiline="true" }}>{{ heading:subheading | nl2br }}</p>
+        {{ /if }}
+    </header>
+{{ /if }}

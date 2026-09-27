@@ -1,0 +1,18 @@
+{{# Features — fields from block_features: heading, items (icon, title, text), buttons #}}
+<section class="bg-stone-50 py-20 sm:py-28">
+    <div class="mx-auto max-w-6xl px-6">
+        {{ partial:sets/common/heading }}
+        {{ if items }}
+            <div class="mt-14 grid gap-px overflow-hidden rounded-2xl bg-zinc-200 ring-1 ring-zinc-200 sm:grid-cols-2 lg:grid-cols-3">
+                {{ items }}
+                    <div class="bg-white p-8">
+                        {{ if icon }}<span{{ fine_builder_visual:open path="items.{index}.icon" }} class="inline-flex size-11 items-center justify-center rounded-full bg-zinc-950 text-amber-300 [&>svg]:size-5" aria-hidden="true">{{ icon }}</span>{{ /if }}
+                        <h3 class="mt-6 text-lg font-semibold text-zinc-950"{{ fine_builder_visual:field path="items.{index}.title" }}>{{ title }}</h3>
+                        <p class="mt-2 text-zinc-600"{{ fine_builder_visual:field path="items.{index}.text" multiline="true" }}>{{ text }}</p>
+                    </div>
+                {{ /items }}
+            </div>
+        {{ /if }}
+        {{ partial:sets/common/buttons :align="heading:alignment" }}
+    </div>
+</section>
