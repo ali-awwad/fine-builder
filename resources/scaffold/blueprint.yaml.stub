@@ -1,0 +1,18 @@
+title: 'DummyDisplay'
+tabs:
+  main:
+    display: Main
+    sections:
+      -
+        fields:
+          -
+            handle: title
+            field:
+              type: text
+              display: Title
+              instructions: 'Internal name, used to find this block when inserting it on a page.'
+              required: true
+              validate:
+                - required
+          -
+            import: block_DummyHandle

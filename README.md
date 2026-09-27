@@ -41,14 +41,30 @@ The same from the command line:
 php please fine-builder:install --collection=pages
 ```
 
-## Adding a block
+## Adding your own blocks
 
-For a block named `stats`:
+Blocks live in your site, not in the addon, so you never edit the addon to add or change one. The quickest way to start one:
 
-1. `resources/fieldsets/block_stats.yaml`: the block's fields. Reuse common fields with `field: common.heading`.
-2. Add a set `stats` to `resources/fieldsets/fine_builder.yaml` containing only `- import: block_stats`.
-3. `resources/blueprints/collections/blocks/stats.yaml`: `title` plus `- import: block_stats`, so the block can also be reusable.
-4. `resources/views/sets/blocks/stats.antlers.html`: the template.
+```bash
+php please fine-builder:make-block testimonials
+# --display="Customer stories"   name shown to editors
+# --group=marketing              group in the block picker (created if needed)
+# --no-reusable                  skip the Blocks collection blueprint
+```
+
+This creates:
+
+- `resources/fieldsets/block_testimonials.yaml`, with heading, text and buttons fields to start from.
+- `resources/views/sets/blocks/testimonials.antlers.html`, with the visual editing hooks already in place.
+- `resources/blueprints/collections/blocks/testimonials.yaml`, so it can be used as a reusable block too.
+
+It also adds a `testimonials` set to `resources/fieldsets/fine_builder.yaml`. Visual editing picks the new block up straight away: it appears in the add-block list, its toolbar and its settings menu.
+
+By hand, the convention is: fieldset `block_<name>`, a set `<name>` in `fine_builder.yaml` containing only `- import: block_<name>`, blueprint `blocks/<name>.yaml`, and template `sets/blocks/<name>.antlers.html`.
+
+## Updating
+
+Installing never overwrites your files, and never changes your `fine_builder.yaml`. When an addon update ships new blocks, **Tools → Fine Builder** lists them under **New blocks available**. Adding them copies their files (existing ones are kept) and adds them to your block list, in the same group they have in the addon.
 
 ## Making your own templates editable
 

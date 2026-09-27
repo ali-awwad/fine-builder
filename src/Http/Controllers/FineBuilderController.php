@@ -2,9 +2,11 @@
 
 namespace AliAwwad\FineBuilder\Http\Controllers;
 
+use AliAwwad\FineBuilder\Actions\AddStockBlocks;
 use AliAwwad\FineBuilder\Actions\DisableFineBuilderOnCollection;
 use AliAwwad\FineBuilder\Actions\EnableFineBuilderOnCollection;
 use AliAwwad\FineBuilder\Actions\GetCollectionsWithFineBuilder;
+use AliAwwad\FineBuilder\Actions\GetNewStockBlocks;
 use AliAwwad\FineBuilder\Actions\InstallBuilderFiles;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -17,6 +19,9 @@ class FineBuilderController
         return Inertia::render('fine-builder::Setup', [
             'title' => __('fine-builder::messages.title'),
             'installed' => InstallBuilderFiles::isInstalled(),
+            'newBlocks' => collect(GetNewStockBlocks::execute())
+                ->map(fn ($block, $handle) => ['handle' => $handle] + $block)
+                ->values(),
             'collections' => GetCollectionsWithFineBuilder::execute()->map(fn ($collection) => [
                 'handle' => $collection->handle(),
                 'title' => $collection->title(),
@@ -33,6 +38,17 @@ class FineBuilderController
             'created' => count($result['created']),
             'skipped' => count($result['skipped']),
         ]));
+
+        return redirect()->cpRoute('fine-builder.index');
+    }
+
+    public function addBlocks(Request $request)
+    {
+        $request->validate(['blocks' => 'nullable|array']);
+
+        $added = AddStockBlocks::execute($request->blocks);
+
+        Toast::success(__('fine-builder::messages.blocks_added', ['count' => count($added)]));
 
         return redirect()->cpRoute('fine-builder.index');
     }

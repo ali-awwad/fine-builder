@@ -37,25 +37,25 @@ fields:
                 -
                   import: block_custom_html
             features:
-              display: 'Features'
+              display: Features
               instructions: 'Icon cards in a grid.'
               fields:
                 -
                   import: block_features
             stats:
-              display: 'Stats'
+              display: Stats
               instructions: 'Big numbers with labels.'
               fields:
                 -
                   import: block_stats
             speakers:
-              display: 'Speakers'
+              display: Speakers
               instructions: 'Speaker cards with name, role and talk.'
               fields:
                 -
                   import: block_speakers
             pricing:
-              display: 'Pricing'
+              display: Pricing
               instructions: 'Ticket tiers with perks and buttons.'
               fields:
                 -

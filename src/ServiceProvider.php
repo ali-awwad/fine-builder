@@ -26,6 +26,7 @@ class ServiceProvider extends AddonServiceProvider
 
     protected $commands = [
         Console\Commands\InstallCommand::class,
+        Console\Commands\MakeBlockCommand::class,
     ];
 
     protected $listen = [
@@ -45,8 +46,8 @@ class ServiceProvider extends AddonServiceProvider
         ], 'fine-builder-config');
 
         // Icon fields use `set: themeicons`: the site's copy once installed, the addon's until then.
-        Icon::register('themeicons', is_dir(resource_path('themeicons'))
-            ? resource_path('themeicons')
+        Icon::register('themeicons', is_dir(Support\Paths::icons())
+            ? Support\Paths::icons()
             : __DIR__.'/../resources/stubs/themeicons');
 
         Nav::extend(function ($nav) {

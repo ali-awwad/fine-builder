@@ -2,6 +2,7 @@
 
 namespace AliAwwad\FineBuilder\Actions;
 
+use AliAwwad\FineBuilder\Support\Paths;
 use Illuminate\Support\Facades\File;
 
 /**
@@ -21,7 +22,7 @@ class InstallBuilderFiles
         foreach ($targets ?? static::targets() as $stubDir => $targetDir) {
             foreach (File::allFiles(static::stubPath($stubDir)) as $file) {
                 $target = $targetDir.'/'.$file->getRelativePathname();
-                $relative = ltrim(str_replace(base_path(), '', $target), '/');
+                $relative = Paths::relative($target);
 
                 if (File::exists($target) && ! $force) {
                     $result['skipped'][] = $relative;
@@ -42,11 +43,11 @@ class InstallBuilderFiles
     public static function targets(): array
     {
         return [
-            'fieldsets' => resource_path('fieldsets'),
-            'blueprints/blocks' => resource_path('blueprints/collections/blocks'),
-            'collections' => config('statamic.stache.stores.collections.directory', base_path('content/collections')),
-            'views' => resource_path('views'),
-            'themeicons' => resource_path('themeicons'),
+            'fieldsets' => Paths::fieldsets(),
+            'blueprints/blocks' => Paths::blockBlueprints(),
+            'collections' => Paths::collections(),
+            'views' => Paths::views(),
+            'themeicons' => Paths::icons(),
         ];
     }
 
@@ -57,6 +58,6 @@ class InstallBuilderFiles
 
     public static function isInstalled(): bool
     {
-        return File::exists(resource_path('fieldsets/'.config('fine-builder.field', 'fine_builder').'.yaml'));
+        return File::exists(Paths::fieldsets(config('fine-builder.field', 'fine_builder').'.yaml'));
     }
 }

@@ -7,11 +7,21 @@ const props = defineProps({
     title: String,
     installed: Boolean,
     collections: Array,
+    newBlocks: Array,
 });
+
+const selectedBlocks = ref(props.newBlocks.map((b) => b.handle));
 
 const selectedCollections = ref(props.collections.filter((c) => c.hasFineBuilder).map((c) => c.handle));
 
-const submitting = ref({ install: false, collections: false });
+const submitting = ref({ install: false, collections: false, blocks: false });
+
+function addBlocks() {
+    submitting.value.blocks = true;
+    router.post(cp_url('fine-builder/blocks'), { blocks: selectedBlocks.value }, {
+        onFinish: () => (submitting.value.blocks = false),
+    });
+}
 
 function install(force = false) {
     if (force && !confirm(__('fine-builder::messages.overwrite_warning'))) return;
@@ -66,6 +76,30 @@ function saveCollections() {
             </div>
         </Card>
 
+        <Card v-if="newBlocks.length">
+            <Heading :level="3" :text="__('fine-builder::messages.new_blocks_heading')" />
+            <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">{{ __('fine-builder::messages.new_blocks_intro') }}</p>
+
+            <CheckboxGroup v-model="selectedBlocks" class="mt-3">
+                <Checkbox
+                    v-for="block in newBlocks"
+                    :key="block.handle"
+                    :value="block.handle"
+                    :label="block.display"
+                    :description="block.instructions"
+                />
+            </CheckboxGroup>
+
+            <div class="mt-4">
+                <Button
+                    variant="primary"
+                    :text="__('fine-builder::messages.add_blocks')"
+                    :disabled="submitting.blocks || !selectedBlocks.length"
+                    @click="addBlocks"
+                />
+            </div>
+        </Card>
+
         <Card>
             <Heading :level="3" :text="__('fine-builder::messages.collections_heading')" />
             <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">{{ __('fine-builder::messages.collections_intro') }}</p>
@@ -92,6 +126,7 @@ function saveCollections() {
             </div>
 
             <Alert class="mt-3">{{ __('fine-builder::messages.build_notice') }}</Alert>
+            <Alert class="mt-3">{{ __('fine-builder::messages.make_block_hint') }}</Alert>
         </Card>
     </div>
 </template>

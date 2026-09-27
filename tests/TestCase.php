@@ -25,6 +25,7 @@ abstract class TestCase extends AddonTestCase
         // Native calls: this runs before parent::setUp() boots the app.
         $this->rimraf($this->site);
         mkdir($this->site.'/collections', 0755, true);
+        mkdir($this->site.'/views', 0755, true);
 
         parent::setUp();
 
@@ -48,6 +49,7 @@ abstract class TestCase extends AddonTestCase
 
         // Sites use the runtime Antlers parser; Testbench would otherwise fall back to the legacy one.
         $app['config']->set('statamic.antlers.version', 'runtime');
+        $app['config']->set('view.paths', [__DIR__.'/__fixtures__/site/views']);
         $app['config']->set('statamic.stache.stores.collections.directory', __DIR__.'/__fixtures__/site/collections');
         $app['config']->set('statamic.stache.stores.entries.directory', __DIR__.'/__fixtures__/site/collections');
     }

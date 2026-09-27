@@ -1,0 +1,13 @@
+title: 'Block DummyDisplay'
+fields:
+  -
+    handle: heading
+    field: common.heading
+  -
+    handle: text
+    field:
+      type: textarea
+      display: Text
+  -
+    handle: buttons
+    field: common.buttons

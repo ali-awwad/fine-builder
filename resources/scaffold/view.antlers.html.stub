@@ -1,0 +1,11 @@
+{{# DummyDisplay — fields from block_DummyHandle: heading, text, buttons.
+    fine_builder_visual:* hooks make text editable in Live Preview and output nothing on the live site. #}}
+<section class="bg-white py-20 sm:py-28">
+    <div class="mx-auto max-w-6xl px-6">
+        {{ partial:sets/common/heading }}
+        {{ if text }}
+            <p class="mt-6 max-w-3xl text-lg/8 text-zinc-600 {{ if heading:alignment == 'center' }}mx-auto text-center{{ elseif heading:alignment == 'end' }}ml-auto text-right{{ /if }}"{{ fine_builder_visual:field path="text" multiline="true" }}>{{ text | nl2br }}</p>
+        {{ /if }}
+        {{ partial:sets/common/buttons :align="heading:alignment" }}
+    </div>
+</section>
