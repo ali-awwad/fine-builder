@@ -3,6 +3,7 @@
 namespace AliAwwad\FineBuilder\Console\Commands;
 
 use AliAwwad\FineBuilder\Actions\EnableFineBuilderOnCollection;
+use AliAwwad\FineBuilder\Actions\GetEntriesWithOwnTemplate;
 use AliAwwad\FineBuilder\Actions\InstallBuilderFiles;
 use Illuminate\Console\Command;
 use Statamic\Console\RunsInPlease;
@@ -39,6 +40,12 @@ class InstallCommand extends Command
 
             EnableFineBuilderOnCollection::execute($handle);
             $this->info("Fine Builder enabled on [$handle].");
+
+            $overriding = GetEntriesWithOwnTemplate::execute($handle);
+            if ($overriding->isNotEmpty()) {
+                $this->warn('  '.$overriding->count().' entries set their own template ('.$overriding->map->get('template')->unique()->implode(', ').'), so they won\'t show blocks.');
+                $this->line('  Pick "'.config('fine-builder.template', 'fine_builder').'" in their Template field, or add {{ partial:sets/fine_builder }} to that template.');
+            }
         }
 
         $this->newLine();

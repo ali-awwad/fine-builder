@@ -38,6 +38,9 @@ abstract class TestCase extends AddonTestCase
 
     protected function tearDown(): void
     {
+        // Icons install to resource_path(), which under Testbench is inside vendor/orchestra.
+        $this->rimraf(resource_path('themeicons'));
+
         parent::tearDown();
 
         $this->rimraf($this->site);

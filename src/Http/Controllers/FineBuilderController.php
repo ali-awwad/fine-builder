@@ -6,6 +6,7 @@ use AliAwwad\FineBuilder\Actions\AddStockBlocks;
 use AliAwwad\FineBuilder\Actions\DisableFineBuilderOnCollection;
 use AliAwwad\FineBuilder\Actions\EnableFineBuilderOnCollection;
 use AliAwwad\FineBuilder\Actions\GetCollectionsWithFineBuilder;
+use AliAwwad\FineBuilder\Actions\GetEntriesWithOwnTemplate;
 use AliAwwad\FineBuilder\Actions\GetNewStockBlocks;
 use AliAwwad\FineBuilder\Actions\InstallBuilderFiles;
 use Illuminate\Http\Request;
@@ -26,7 +27,12 @@ class FineBuilderController
                 'handle' => $collection->handle(),
                 'title' => $collection->title(),
                 'hasFineBuilder' => $collection->hasFineBuilder,
+                'template' => $collection->template(),
+                'entriesWithOwnTemplate' => $collection->hasFineBuilder
+                    ? GetEntriesWithOwnTemplate::execute($collection->handle())->count()
+                    : 0,
             ])->values(),
+            'builderTemplate' => config('fine-builder.template', 'fine_builder'),
         ]);
     }
 

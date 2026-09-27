@@ -261,10 +261,24 @@
     const pageRoot = (doc) => doc.querySelector('[data-fbv-root]');
     if (pageRoot(document)) remember(pageRoot(document));
 
+    // Everything on the page except the blocks and this overlay, as rendered by the server.
+    // Only what precedes the overlay script counts: this runs before the browser has parsed
+    // anything after it (trailing whitespace, markup other middleware appends).
+    const outside = (doc) => {
+        const body = doc.body.cloneNode(true);
+        body.querySelector('[data-fbv-root]')?.replaceChildren();
+        const script = body.querySelector('script[data-fbv-overlay]');
+        while (script?.nextSibling) script.nextSibling.remove();
+        body.querySelectorAll('[data-fbv-overlay], [class^="fbv-"]').forEach((n) => n.remove());
+        return body.innerHTML;
+    };
+    const outsideSource = outside(document);
+
     window.StatamicLivePreviewMorph = (doc, next) => {
         const root = pageRoot(doc);
         const nextRoot = pageRoot(next);
-        if (!root || !nextRoot) return location.reload();
+        // Something outside the blocks changed (a header partial, navigation...): reload to show it.
+        if (!root || !nextRoot || outside(next) !== outsideSource) return location.reload();
         if (state.editing) stopEditing(state.editing, false);
 
         const current = [...root.children].filter((n) => n !== state.addBar);
@@ -279,11 +293,7 @@
         });
         root.replaceChildren(...children, ...(state.addBar ? [state.addBar] : []));
 
-        // Page chrome outside the builder (title, navigation) rarely changes; sync it cheaply.
         doc.title = next.title;
-        const chrome = (d) => [...d.body.children].filter((n) => !n.contains(pageRoot(d)) && !n.matches('script, style, [class^="fbv-"]'));
-        const [was, now] = [chrome(doc), chrome(next)];
-        now.forEach((n, i) => was[i] && was[i].outerHTML !== n.outerHTML && was[i].replaceWith(doc.importNode(n, true)));
 
         const find = (b) => b && (b.isConnected ? b : blockById(b.dataset.fbvSet));
         state.selected = find(state.selected);

@@ -5,10 +5,12 @@ namespace AliAwwad\FineBuilder\Tests\Actions;
 use AliAwwad\FineBuilder\Actions\DisableFineBuilderOnCollection;
 use AliAwwad\FineBuilder\Actions\EnableFineBuilderOnCollection;
 use AliAwwad\FineBuilder\Actions\GetCollectionsWithFineBuilder;
+use AliAwwad\FineBuilder\Actions\GetEntriesWithOwnTemplate;
 use AliAwwad\FineBuilder\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 use Statamic\Facades\Blueprint;
 use Statamic\Facades\Collection;
+use Statamic\Facades\Entry;
 
 class CollectionSetupTest extends TestCase
 {
@@ -94,5 +96,21 @@ class CollectionSetupTest extends TestCase
 
         $this->assertSame(['pages'], $collections->map->handle()->all());
         $this->assertTrue($collections->first()->hasFineBuilder);
+    }
+
+    #[Test]
+    public function entries_overriding_the_template_are_reported(): void
+    {
+        EnableFineBuilderOnCollection::execute('pages');
+
+        Entry::make()->collection('pages')->slug('a')->data(['title' => 'A', 'template' => 'default'])->save();
+        Entry::make()->collection('pages')->slug('b')->data(['title' => 'B', 'template' => 'fine_builder'])->save();
+        Entry::make()->collection('pages')->slug('c')->data(['title' => 'C'])->save();
+
+        $this->assertSame(['a'], GetEntriesWithOwnTemplate::execute('pages')->map->slug()->all());
+
+        $this->artisan('fine-builder:install', ['--collection' => ['pages']])
+            ->expectsOutputToContain('1 entries set their own template (default)')
+            ->assertSuccessful();
     }
 }

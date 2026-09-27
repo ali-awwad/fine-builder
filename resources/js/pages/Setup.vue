@@ -1,14 +1,33 @@
 <script setup>
 import { Head, router } from '@statamic/cms/inertia';
 import { Card, Heading, Header, Button, Checkbox, CheckboxGroup, Alert } from '@statamic/cms/ui';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 const props = defineProps({
     title: String,
     installed: Boolean,
     collections: Array,
     newBlocks: Array,
+    builderTemplate: String,
 });
+
+const templateWarnings = computed(() =>
+    props.collections
+        .filter((c) => c.hasFineBuilder)
+        .flatMap((c) => [
+            c.template !== props.builderTemplate
+                ? __('fine-builder::messages.collection_template', { collection: c.title, template: c.template })
+                : null,
+            c.entriesWithOwnTemplate
+                ? __('fine-builder::messages.entries_with_own_template', {
+                      collection: c.title,
+                      count: c.entriesWithOwnTemplate,
+                      template: props.builderTemplate,
+                  })
+                : null,
+        ])
+        .filter(Boolean),
+);
 
 const selectedBlocks = ref(props.newBlocks.map((b) => b.handle));
 
@@ -124,6 +143,10 @@ function saveCollections() {
                     @click="saveCollections"
                 />
             </div>
+
+            <Heading :level="3" class="mt-6" :text="__('fine-builder::messages.template_heading')" />
+            <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">{{ __('fine-builder::messages.template_intro', { template: builderTemplate }) }}</p>
+            <Alert v-for="warning in templateWarnings" :key="warning" class="mt-3" variant="warning">{{ warning }}</Alert>
 
             <Alert class="mt-3">{{ __('fine-builder::messages.build_notice') }}</Alert>
             <Alert class="mt-3">{{ __('fine-builder::messages.make_block_hint') }}</Alert>

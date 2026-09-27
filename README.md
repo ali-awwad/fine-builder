@@ -41,6 +41,29 @@ The same from the command line:
 php please fine-builder:install --collection=pages
 ```
 
+## Rendering the blocks
+
+Your templates don't know about the builder until one of them includes it. Blocks render wherever a template has:
+
+```antlers
+{{ partial:sets/fine_builder }}
+```
+
+There are three ways to set that up:
+
+1. **The installed `fine_builder` template (the default).** It renders the blocks, and shows the entry's `{{ content }}` for entries that don't have blocks yet. When you enable a collection that still uses `default`, it switches to this template automatically.
+2. **Your own template.** If the collection keeps its own template (e.g. `default.antlers.html` or `page.antlers.html`), add the partial where the blocks should go:
+
+   ```antlers
+   <h1>{{ title }}</h1>
+   {{ partial:sets/fine_builder }}
+   ```
+
+   The Setup page warns when an enabled collection uses a template other than `fine_builder`, so you can check it includes the partial.
+3. **Per entry.** An entry's Template field overrides the collection's template. Sites that saved entries with `template: default` keep that template for those entries, even after the collection switches. Set it to `fine_builder` on those entries, or add the partial to their template. `fine-builder:install --collection=…` and the Setup page both list how many entries do this.
+
+The partial works inside any layout, and Live Preview's visual editing works wherever it's included. For content above the blocks for a specific collection, such as an event date, the `fine_builder` template includes `headers/<collection>.antlers.html` when it exists.
+
 ## Adding your own blocks
 
 Blocks live in your site, not in the addon, so you never edit the addon to add or change one. The quickest way to start one:
@@ -71,7 +94,7 @@ Installing never overwrites your files, and never changes your `fine_builder.yam
 The visual editing hooks output nothing outside Live Preview:
 
 ```antlers
-<main{{ fine_builder_visual:root }}>                      {{# wraps the builder loop #}}
+<div{{ fine_builder_visual:root }}>                       {{# wraps the builder loop (already in sets/fine_builder) #}}
 <div{{ fine_builder_visual:attrs :id="id" :type="type" }}> {{# wraps each set #}}
 <h2{{ fine_builder_visual:field path="heading.text" }}>    {{# text edited in place #}}
 <img{{ fine_builder_visual:open path="image" }} ...>        {{# click opens the field #}}
