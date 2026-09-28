@@ -84,7 +84,7 @@ This creates:
 
 It also adds a `testimonials` set to `resources/fieldsets/fine_builder.yaml`. Visual editing picks the new block up straight away: it appears in the add-block list, its toolbar and its settings menu.
 
-By hand, the convention is: fieldset `block_<name>`, a set `<name>` in `fine_builder.yaml` containing only `- import: block_<name>`, blueprint `blocks/<name>.yaml`, and template `sets/blocks/<name>.antlers.html`.
+These are the default names; see [Configuration](#configuration) to change them. By hand, the convention is: fieldset `block_<name>`, a set `<name>` in `fine_builder.yaml` containing only `- import: block_<name>`, blueprint `blocks/<name>.yaml`, and template `sets/blocks/<name>.antlers.html`.
 
 ## Updating
 
@@ -117,6 +117,11 @@ php artisan vendor:publish --tag=fine-builder-config
 ```
 
 - `field`: the builder fieldset/field handle (default `fine_builder`).
+- `collection`: handle of the reusable blocks collection (default `blocks`).
+- `fieldset_prefix`: prefix of each block's fieldset (default `block_`, as in `block_hero`).
+- `views`: folder of the block templates, relative to `resources/views` (default `sets/blocks`).
+
+  Set these three before installing. Installing, adding new blocks and `make-block` then use your names, for example `section_hero.yaml`, `sections/hero.antlers.html` and a `sections` collection. Files already in the site are not renamed.
 - `template`: the template assigned when the builder is enabled on a collection.
 - `inject_overlay`: adds the visual editing script to Live Preview pages automatically. Turn it off to place `{{ fbv:script }}` in your layout yourself.
 

@@ -2,12 +2,14 @@
 
 namespace AliAwwad\FineBuilder\Actions;
 
+use AliAwwad\FineBuilder\Support\Conventions;
 use AliAwwad\FineBuilder\Support\Paths;
 use Illuminate\Support\Facades\File;
 
 /**
  * Copies the builder's starter files into the site, where they belong to the site
- * (restyle partials, add blocks, edit fieldsets). Existing files are kept unless forced.
+ * (restyle partials, add blocks, edit fieldsets), under the names set in config. Existing
+ * files are kept unless forced.
  */
 class InstallBuilderFiles
 {
@@ -21,7 +23,7 @@ class InstallBuilderFiles
 
         foreach ($targets ?? static::targets() as $stubDir => $targetDir) {
             foreach (File::allFiles(static::stubPath($stubDir)) as $file) {
-                $target = $targetDir.'/'.$file->getRelativePathname();
+                $target = $targetDir.'/'.Conventions::path($stubDir, $file->getRelativePathname());
                 $relative = Paths::relative($target);
 
                 if (File::exists($target) && ! $force) {
@@ -30,8 +32,7 @@ class InstallBuilderFiles
                     continue;
                 }
 
-                File::ensureDirectoryExists(dirname($target));
-                File::copy($file->getPathname(), $target);
+                static::copy($file->getPathname(), $target);
                 $result['created'][] = $relative;
             }
         }
@@ -49,6 +50,16 @@ class InstallBuilderFiles
             'views' => Paths::views(),
             'themeicons' => Paths::icons(),
         ];
+    }
+
+    /** Copies a stub, renaming the default block names in text files to the configured ones. */
+    public static function copy(string $source, string $target): void
+    {
+        File::ensureDirectoryExists(dirname($target));
+
+        in_array(pathinfo($source, PATHINFO_EXTENSION), ['yaml', 'html'], true)
+            ? File::put($target, Conventions::apply(File::get($source)))
+            : File::copy($source, $target);
     }
 
     public static function stubPath(string $path = ''): string

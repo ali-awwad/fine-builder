@@ -3,12 +3,13 @@
 namespace AliAwwad\FineBuilder\Actions;
 
 use AliAwwad\FineBuilder\Support\BuilderFieldset;
+use AliAwwad\FineBuilder\Support\Conventions;
 use AliAwwad\FineBuilder\Support\Paths;
 use Illuminate\Support\Facades\File;
 
 /**
  * Adds addon-shipped blocks to the site's builder: copies their missing files
- * (fieldset, Blocks blueprint, template) and adds their sets to the same group.
+ * (fieldset, reusable blocks blueprint, template) and adds their sets to the same group.
  */
 class AddStockBlocks
 {
@@ -27,15 +28,14 @@ class AddStockBlocks
 
         foreach ($handles as $handle) {
             $files = [
-                "fieldsets/block_$handle.yaml" => Paths::fieldsets("block_$handle.yaml"),
+                "fieldsets/block_$handle.yaml" => Paths::fieldsets(Conventions::fieldset($handle).'.yaml'),
                 "blueprints/blocks/$handle.yaml" => Paths::blockBlueprints("$handle.yaml"),
-                "views/sets/blocks/$handle.antlers.html" => Paths::views("sets/blocks/$handle.antlers.html"),
+                "views/sets/blocks/$handle.antlers.html" => Paths::blockViews("$handle.antlers.html"),
             ];
 
             foreach ($files as $stub => $target) {
                 if (File::exists($source = InstallBuilderFiles::stubPath($stub)) && ! File::exists($target)) {
-                    File::ensureDirectoryExists(dirname($target));
-                    File::copy($source, $target);
+                    InstallBuilderFiles::copy($source, $target);
                 }
             }
 

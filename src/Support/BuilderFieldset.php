@@ -22,10 +22,10 @@ class BuilderFieldset
         return Fieldset::find(static::handle())?->contents();
     }
 
-    /** The builder fieldset shipped with the addon. */
+    /** The builder fieldset shipped with the addon, using the configured names. */
     public static function stubContents(): array
     {
-        return YAML::file(__DIR__.'/../../resources/stubs/fieldsets/fine_builder.yaml')->parse();
+        return YAML::parse(Conventions::apply(file_get_contents(__DIR__.'/../../resources/stubs/fieldsets/fine_builder.yaml')));
     }
 
     /** @return array<string, array{display: ?string, sets: array<string, array>}> */

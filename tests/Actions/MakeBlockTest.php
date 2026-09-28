@@ -54,6 +54,20 @@ class MakeBlockTest extends TestCase
     }
 
     #[Test]
+    public function it_uses_the_configured_block_names(): void
+    {
+        config(['fine-builder.collection' => 'sections', 'fine-builder.fieldset_prefix' => 'section_', 'fine-builder.views' => 'sections']);
+
+        MakeBlock::execute('logo_cloud');
+
+        $this->assertFileExists($this->site.'/fieldsets/section_logo_cloud.yaml');
+        $this->assertFileExists($this->site.'/views/sections/logo_cloud.antlers.html');
+        $this->assertSame([['import' => 'section_logo_cloud']], BuilderFieldset::sets(BuilderFieldset::siteContents())['logo_cloud']['set']['fields']);
+        $this->assertTrue(Blueprint::find('collections.sections.logo_cloud')->hasField('heading'));
+        $this->assertStringContainsString('fields from section_logo_cloud', File::get($this->site.'/views/sections/logo_cloud.antlers.html'));
+    }
+
+    #[Test]
     public function a_new_group_is_created_before_the_reusable_group(): void
     {
         MakeBlock::execute('faq', group: 'marketing', reusable: false);

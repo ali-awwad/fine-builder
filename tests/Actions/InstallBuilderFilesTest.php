@@ -31,6 +31,34 @@ class InstallBuilderFilesTest extends TestCase
     }
 
     #[Test]
+    public function it_installs_under_the_configured_block_names(): void
+    {
+        config(['fine-builder.collection' => 'sections', 'fine-builder.fieldset_prefix' => 'section_', 'fine-builder.views' => 'partials/sections']);
+
+        InstallBuilderFiles::execute(targets: $this->targets());
+        $install = $this->site.'/install';
+
+        $this->assertFileExists("$install/fieldsets/section_hero.yaml");
+        $this->assertFileDoesNotExist("$install/fieldsets/block_hero.yaml");
+        $this->assertFileExists("$install/fieldsets/common.yaml");
+        $this->assertFileExists("$install/views/partials/sections/hero.antlers.html");
+        $this->assertDirectoryDoesNotExist("$install/views/sets/blocks");
+        $this->assertFileExists("$install/views/sets/fine_builder.antlers.html");
+        $this->assertSame('Sections', \Statamic\Facades\YAML::file("$install/collections/sections.yaml")->parse()['title']);
+
+        $builder = \Statamic\Facades\YAML::file("$install/fieldsets/fine_builder.yaml")->parse()['fields'][0]['field'];
+        $this->assertSame([['import' => 'section_hero']], $builder['sets']['blocks']['sets']['hero']['fields']);
+        $this->assertSame(['sections'], $builder['sets']['reusable']['sets']['block']['fields'][0]['field']['collections']);
+        $this->assertStringContainsString('the Sections collection', $builder['instructions']);
+
+        $this->assertStringContainsString('import: section_hero', File::get("$install/blueprints/blocks/hero.yaml"));
+
+        $partial = File::get("$install/views/sets/fine_builder.antlers.html");
+        $this->assertStringContainsString('src="partials/sections/{type}"', $partial);
+        $this->assertStringNotContainsString('sets/blocks', $partial);
+    }
+
+    #[Test]
     public function it_keeps_customised_files_unless_forced(): void
     {
         InstallBuilderFiles::execute(targets: $this->targets());

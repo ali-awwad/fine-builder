@@ -15,9 +15,9 @@ class MakeBlockCommand extends Command
         {handle : snake_case block handle, e.g. testimonials}
         {--display= : Name shown to editors (default: from the handle)}
         {--group=blocks : Set group in the builder\'s block picker}
-        {--no-reusable : Don\'t create a Blocks collection blueprint}';
+        {--no-reusable : Don\'t create a reusable blocks collection blueprint}';
 
-    protected $description = 'Create a new Fine Builder block: fieldset, builder set, template and Blocks blueprint';
+    protected $description = 'Create a new Fine Builder block: fieldset, builder set, template and reusable blocks blueprint';
 
     public function handle(): int
     {

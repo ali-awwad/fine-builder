@@ -15,7 +15,12 @@ class Paths
 
     public static function blockBlueprints(string $file = ''): string
     {
-        return static::join(Blueprint::directory().'/collections/blocks', $file);
+        return static::join(Blueprint::directory().'/collections/'.Conventions::collection(), $file);
+    }
+
+    public static function blockViews(string $file = ''): string
+    {
+        return static::join(static::views(Conventions::views()), $file);
     }
 
     public static function views(string $file = ''): string

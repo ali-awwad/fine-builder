@@ -16,6 +16,24 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Block names
+    |--------------------------------------------------------------------------
+    |
+    | One name ties each block together: fieldset <fieldset_prefix><name>, a
+    | blueprint <name> in the reusable blocks collection, and the template
+    | <views>/<name>. Set these before installing: installed and scaffolded
+    | files use them, and existing files are not renamed.
+    |
+    */
+
+    'collection' => 'blocks',
+
+    'fieldset_prefix' => 'block_',
+
+    'views' => 'sets/blocks',
+
+    /*
+    |--------------------------------------------------------------------------
     | Template
     |--------------------------------------------------------------------------
     |

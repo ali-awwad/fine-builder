@@ -3,6 +3,7 @@
 namespace AliAwwad\FineBuilder\Actions;
 
 use AliAwwad\FineBuilder\Support\BuilderFieldset;
+use AliAwwad\FineBuilder\Support\Conventions;
 use AliAwwad\FineBuilder\Support\Paths;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
@@ -10,7 +11,8 @@ use InvalidArgumentException;
 
 /**
  * Scaffolds a new block in the site, following the builder's one-name convention:
- * fieldset block_<handle>, set <handle>, Blocks blueprint <handle>, template sets/blocks/<handle>.
+ * fieldset block_<handle>, set <handle>, Blocks blueprint <handle>, template sets/blocks/<handle>
+ * (prefix, collection and views folder as configured, see Conventions).
  */
 class MakeBlock
 {
@@ -32,8 +34,8 @@ class MakeBlock
         $display ??= Str::of($handle)->replace('_', ' ')->title()->toString();
 
         $files = [
-            'fieldset.yaml.stub' => Paths::fieldsets("block_$handle.yaml"),
-            'view.antlers.html.stub' => Paths::views("sets/blocks/$handle.antlers.html"),
+            'fieldset.yaml.stub' => Paths::fieldsets(Conventions::fieldset($handle).'.yaml'),
+            'view.antlers.html.stub' => Paths::blockViews("$handle.antlers.html"),
         ];
 
         if ($reusable) {
@@ -49,7 +51,7 @@ class MakeBlock
         foreach ($files as $stub => $target) {
             // YAML stubs quote the name in single quotes, which escape as ''.
             $name = str_ends_with($stub, '.yaml.stub') ? str_replace("'", "''", $display) : $display;
-            $content = str_replace(['DummyHandle', 'DummyDisplay'], [$handle, $name], File::get(__DIR__.'/../../resources/scaffold/'.$stub));
+            $content = Conventions::apply(str_replace(['DummyHandle', 'DummyDisplay'], [$handle, $name], File::get(__DIR__.'/../../resources/scaffold/'.$stub)));
 
             File::ensureDirectoryExists(dirname($target));
             File::put($target, $content);
@@ -58,7 +60,7 @@ class MakeBlock
         BuilderFieldset::save(BuilderFieldset::withSet($contents, $group, null, $handle, [
             'display' => $display,
             'instructions' => 'Heading, text and buttons.',
-            'fields' => [['import' => "block_$handle"]],
+            'fields' => [['import' => Conventions::fieldset($handle)]],
         ]));
 
         return array_map(fn ($path) => Paths::relative($path), array_values($files));

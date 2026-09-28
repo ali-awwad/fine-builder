@@ -57,6 +57,20 @@ class StockBlocksTest extends TestCase
     }
 
     #[Test]
+    public function added_blocks_use_the_configured_block_names(): void
+    {
+        config(['fine-builder.collection' => 'sections', 'fine-builder.fieldset_prefix' => 'section_', 'fine-builder.views' => 'sections']);
+        $this->removeFromSite('pricing');
+
+        AddStockBlocks::execute(['pricing']);
+
+        $this->assertSame([['import' => 'section_pricing']], BuilderFieldset::sets(BuilderFieldset::siteContents())['pricing']['set']['fields']);
+        $this->assertNotNull(Fieldset::find('section_pricing'));
+        $this->assertFileExists($this->site.'/views/sections/pricing.antlers.html');
+        $this->assertStringContainsString('import: section_pricing', file_get_contents($this->site.'/blueprints/collections/sections/pricing.yaml'));
+    }
+
+    #[Test]
     public function nothing_is_offered_before_install(): void
     {
         unlink($this->site.'/fieldsets/fine_builder.yaml');
