@@ -9,14 +9,18 @@ use AliAwwad\FineBuilder\Actions\GetCollectionsWithFineBuilder;
 use AliAwwad\FineBuilder\Actions\GetEntriesWithOwnTemplate;
 use AliAwwad\FineBuilder\Actions\GetNewStockBlocks;
 use AliAwwad\FineBuilder\Actions\InstallBuilderFiles;
+use AliAwwad\FineBuilder\ServiceProvider;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Statamic\Facades\CP\Toast;
+use Statamic\Http\Controllers\CP\CpController;
 
-class FineBuilderController
+class FineBuilderController extends CpController
 {
     public function index()
     {
+        $this->authorize(ServiceProvider::PERMISSION);
+
         return Inertia::render('fine-builder::Setup', [
             'title' => __('fine-builder::messages.title'),
             'installed' => InstallBuilderFiles::isInstalled(),
@@ -39,6 +43,8 @@ class FineBuilderController
 
     public function install(Request $request)
     {
+        $this->authorize(ServiceProvider::PERMISSION);
+
         $result = InstallBuilderFiles::execute($request->boolean('force'));
 
         Toast::success(__('fine-builder::messages.installed', [
@@ -51,6 +57,8 @@ class FineBuilderController
 
     public function addBlocks(Request $request)
     {
+        $this->authorize(ServiceProvider::PERMISSION);
+
         $request->validate(['blocks' => 'nullable|array']);
 
         $added = AddStockBlocks::execute($request->blocks);
@@ -62,6 +70,8 @@ class FineBuilderController
 
     public function collections(Request $request)
     {
+        $this->authorize(ServiceProvider::PERMISSION);
+
         $request->validate(['collections' => 'nullable|array']);
 
         if (! InstallBuilderFiles::isInstalled()) {

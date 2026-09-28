@@ -5,10 +5,13 @@ namespace AliAwwad\FineBuilder;
 use AliAwwad\FineBuilder\Fieldtypes\FineBuilderBridge;
 use Statamic\Facades\CP\Nav;
 use Statamic\Facades\Icon;
+use Statamic\Facades\Permission;
 use Statamic\Providers\AddonServiceProvider;
 
 class ServiceProvider extends AddonServiceProvider
 {
+    public const PERMISSION = 'configure fine builder';
+
     protected $vite = [
         'input' => [
             'resources/js/addon.js',
@@ -51,11 +54,21 @@ class ServiceProvider extends AddonServiceProvider
             ? Support\Paths::icons()
             : __DIR__.'/../resources/stubs/themeicons');
 
+        // The setup page rewrites fieldsets, templates and collection settings, so only trusted roles get it.
+        Permission::extend(function () {
+            Permission::group('fine_builder', 'Fine Builder', function () {
+                Permission::register(self::PERMISSION)
+                    ->label(__('fine-builder::messages.permission'))
+                    ->description(__('fine-builder::messages.permission_description'));
+            });
+        });
+
         Nav::extend(function ($nav) {
             $nav->create('Fine Builder')
                 ->section('Tools')
                 ->route('fine-builder.index')
-                ->icon('dashboard-layout');
+                ->icon('dashboard-layout')
+                ->can(self::PERMISSION);
         });
     }
 }

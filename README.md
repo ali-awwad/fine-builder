@@ -13,7 +13,7 @@
 - Headings let editors choose their HTML tag (H1–H6), which also sets their size, so the page outline stays right for SEO. Alignment applies to the whole heading.
 - Reusable blocks: a **Blocks** collection whose entries can be inserted on any page with the "Block" set.
 - One name ties each block together: fieldset `block_<name>`, set `<name>`, Blocks blueprint `<name>` and template `sets/blocks/<name>`.
-- A `themeicons` icon set for icon fields.
+- A `themeicons` icon set for icon fields, made of [Lucide](https://lucide.dev) icons (ISC); see [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
 
 **Visual editing in Live Preview**
 
@@ -31,7 +31,7 @@
 composer require ali-awwad/fine-builder
 ```
 
-Then open **Tools → Fine Builder** in the Control Panel:
+Then open **Tools → Fine Builder** in the Control Panel. Super users see it straight away; other roles need the **Configure Fine Builder** permission (**Users → Roles**), because the page installs files and changes collection blueprints and templates.
 
 1. **Install builder files.** This copies the fieldsets, block templates, icons and the Blocks collection into your site (`resources/fieldsets`, `resources/views/sets`, `resources/themeicons`, `content/collections/blocks.yaml`). They are yours to restyle and extend. Existing files are kept.
 2. **Select collections** to use the builder on. Each selected collection gets the builder next to its title and a "Visual editing" helper in the sidebar. Live Preview is set to update without reloading, and the collection switches to the `fine_builder` template if it still uses `default`.
@@ -132,3 +132,9 @@ php artisan vendor:publish --tag=fine-builder-config
 ## Security
 
 The Custom HTML block outputs its content unescaped by design. Only give trusted roles access to it.
+
+**Tools → Fine Builder** can overwrite fieldsets and templates and change collection blueprints, so it needs the **Configure Fine Builder** permission.
+
+## Support
+
+Report bugs and ask questions in [GitHub issues](https://github.com/ali-awwad/fine-builder/issues). Changes in each release are listed in the [changelog](CHANGELOG.md).
