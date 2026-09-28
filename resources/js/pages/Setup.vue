@@ -9,6 +9,7 @@ const props = defineProps({
     collections: Array,
     newBlocks: Array,
     builderTemplate: String,
+    builderPartial: String,
 });
 
 const templateWarnings = computed(() =>
@@ -16,7 +17,7 @@ const templateWarnings = computed(() =>
         .filter((c) => c.hasFineBuilder)
         .flatMap((c) => [
             c.template !== props.builderTemplate
-                ? __('fine-builder::messages.collection_template', { collection: c.title, template: c.template })
+                ? __('fine-builder::messages.collection_template', { collection: c.title, template: c.template, partial: props.builderPartial })
                 : null,
             c.entriesWithOwnTemplate
                 ? __('fine-builder::messages.entries_with_own_template', {
@@ -145,7 +146,7 @@ function saveCollections() {
             </div>
 
             <Heading :level="3" class="mt-6" :text="__('fine-builder::messages.template_heading')" />
-            <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">{{ __('fine-builder::messages.template_intro', { template: builderTemplate }) }}</p>
+            <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">{{ __('fine-builder::messages.template_intro', { template: builderTemplate, partial: builderPartial }) }}</p>
             <Alert v-for="warning in templateWarnings" :key="warning" class="mt-3" variant="warning">{{ warning }}</Alert>
 
             <Alert class="mt-3">{{ __('fine-builder::messages.build_notice') }}</Alert>

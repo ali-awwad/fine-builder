@@ -59,6 +59,28 @@ class InstallBuilderFilesTest extends TestCase
     }
 
     #[Test]
+    public function it_installs_under_the_configured_field_and_template(): void
+    {
+        config(['fine-builder.field' => 'page_builder', 'fine-builder.template' => 'builder_page']);
+
+        InstallBuilderFiles::execute(targets: $this->targets());
+        $install = $this->site.'/install';
+
+        $this->assertFileDoesNotExist("$install/fieldsets/fine_builder.yaml");
+        $this->assertSame('page_builder', \Statamic\Facades\YAML::file("$install/fieldsets/page_builder.yaml")->parse()['fields'][0]['handle']);
+
+        $partial = File::get("$install/views/sets/page_builder.antlers.html");
+        $this->assertStringContainsString('{{ page_builder }}', $partial);
+        $this->assertStringContainsString('{{ /page_builder }}', $partial);
+        $this->assertStringContainsString('{{ fbv:root }}', $partial);
+
+        $template = File::get("$install/views/builder_page.antlers.html");
+        $this->assertStringContainsString('{{ partial:sets/page_builder }}', $template);
+        $this->assertStringContainsString('!page_builder', $template);
+        $this->assertStringNotContainsString('fine_builder', $template);
+    }
+
+    #[Test]
     public function it_keeps_customised_files_unless_forced(): void
     {
         InstallBuilderFiles::execute(targets: $this->targets());

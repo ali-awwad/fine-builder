@@ -7,10 +7,22 @@ use Illuminate\Support\Str;
 /**
  * The names tying a block together, from config: fieldset <prefix><name>, blueprint <name> in the
  * reusable blocks collection, template <views>/<name>. The addon's stubs use the defaults
- * (block_, blocks, sets/blocks); path() and apply() rewrite them to the configured names on copy.
+ * (fine_builder, block_, blocks, sets/blocks); path() and apply() rewrite them to the configured
+ * names on copy.
  */
 class Conventions
 {
+    /** Handle of the builder fieldset, its Replicator field and its sets/<field> partial. */
+    public static function field(): string
+    {
+        return config('fine-builder.field', 'fine_builder');
+    }
+
+    public static function template(): string
+    {
+        return config('fine-builder.template', 'fine_builder');
+    }
+
     public static function collection(): string
     {
         return config('fine-builder.collection', 'blocks');
@@ -46,9 +58,15 @@ class Conventions
     public static function path(string $stubDir, string $relative): string
     {
         return match ($stubDir) {
-            'fieldsets' => preg_replace('/^block_/', static::fieldsetPrefix(), $relative),
+            'fieldsets' => $relative === 'fine_builder.yaml'
+                ? static::field().'.yaml'
+                : preg_replace('/^block_/', static::fieldsetPrefix(), $relative),
             'collections' => $relative === 'blocks.yaml' ? static::collection().'.yaml' : $relative,
-            'views' => preg_replace('#^sets/blocks/#', static::views().'/', $relative),
+            'views' => match ($relative) {
+                'fine_builder.antlers.html' => static::template().'.antlers.html',
+                'sets/fine_builder.antlers.html' => 'sets/'.static::field().'.antlers.html',
+                default => preg_replace('#^sets/blocks/#', static::views().'/', $relative),
+            },
             default => $relative,
         };
     }
@@ -63,9 +81,10 @@ class Conventions
             'the Blocks collection' => 'the '.static::collectionTitle().' collection',
         ]);
 
+        // \b keeps fine_builder_visual (the {{ fbv }} tag's long name) intact.
         return preg_replace(
-            ['/^(\s*collections:\s*\n\s*-\s*)blocks$/m', '/^title: Blocks$/m'],
-            ['${1}'.static::collection(), 'title: '.static::collectionTitle()],
+            ['/^(\s*collections:\s*\n\s*-\s*)blocks$/m', '/^title: Blocks$/m', '/\bfine_builder\b/'],
+            ['${1}'.static::collection(), 'title: '.static::collectionTitle(), static::field()],
             $contents
         );
     }

@@ -33,6 +33,7 @@ class FineBuilderController
                     : 0,
             ])->values(),
             'builderTemplate' => config('fine-builder.template', 'fine_builder'),
+            'builderPartial' => 'sets/'.config('fine-builder.field', 'fine_builder'),
         ]);
     }
 

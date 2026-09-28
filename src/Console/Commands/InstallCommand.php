@@ -44,7 +44,7 @@ class InstallCommand extends Command
             $overriding = GetEntriesWithOwnTemplate::execute($handle);
             if ($overriding->isNotEmpty()) {
                 $this->warn('  '.$overriding->count().' entries set their own template ('.$overriding->map->get('template')->unique()->implode(', ').'), so they won\'t show blocks.');
-                $this->line('  Pick "'.config('fine-builder.template', 'fine_builder').'" in their Template field, or add {{ partial:sets/fine_builder }} to that template.');
+                $this->line('  Pick "'.config('fine-builder.template', 'fine_builder').'" in their Template field, or add {{ partial:sets/'.config('fine-builder.field', 'fine_builder').' }} to that template.');
             }
         }
 
