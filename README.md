@@ -122,6 +122,8 @@ php artisan vendor:publish --tag=fine-builder-config
 - `views`: folder of the block templates, relative to `resources/views` (default `sets/blocks`).
 
   Set these three before installing. Installing, adding new blocks and `make-block` then use your names, for example `section_hero.yaml`, `sections/hero.antlers.html` and a `sections` collection. Files already in the site are not renamed.
+
+  These settings only cover the per-block files. The shared partials stay where they are (`sets/fine_builder` renders the page, `sets/common/*` holds the heading and buttons), and the block picker keeps its "Blocks" group label, which you can rename in `fine_builder.yaml`.
 - `template`: the template assigned when the builder is enabled on a collection.
 - `inject_overlay`: adds the visual editing script to Live Preview pages automatically. Turn it off to place `{{ fbv:script }}` in your layout yourself.
 
