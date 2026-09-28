@@ -10,7 +10,11 @@ All notable changes to Fine Builder are documented here.
 
 ### Added
 
-- Changelog, support route (GitHub issues) and third-party notices for the Lucide/Feather-based `themeicons` set.
+- Changelog, support route (GitHub issues) and third-party notices.
+
+### Changed
+
+- The `themeicons` set and the Live Preview toolbar now use the official Lucide icons. Sites that already installed the icons keep their copies; reinstalling with overwrite replaces them.
 
 ## v0.1.4 - 2026-09-28
 

@@ -13,7 +13,7 @@
 - Headings let editors choose their HTML tag (H1–H6), which also sets their size, so the page outline stays right for SEO. Alignment applies to the whole heading.
 - Reusable blocks: a **Blocks** collection whose entries can be inserted on any page with the "Block" set.
 - One name ties each block together: fieldset `block_<name>`, set `<name>`, Blocks blueprint `<name>` and template `sets/blocks/<name>`.
-- A `themeicons` icon set for icon fields, based on [Lucide](https://lucide.dev) (ISC) and Feather (MIT); see [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
+- A `themeicons` icon set for icon fields, made of [Lucide](https://lucide.dev) icons (ISC); see [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
 
 **Visual editing in Live Preview**
 
