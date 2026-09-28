@@ -223,6 +223,21 @@ const actions = {
             window.Statamic?.$toast?.error?.(e.message);
         }
     },
+    /** Reusable blocks live in their own entry: save it directly, it isn't part of this form. */
+    async editReusable({ entry, path, value }) {
+        const response = await fetch(window.cp_url(`fine-builder/reusable/${entry}`), {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': csrf(),
+            },
+            body: JSON.stringify({ path, value }),
+        });
+        if (response.ok) window.Statamic?.$toast?.success?.(__('Reusable block saved. The change shows on every page using it.'));
+        else window.Statamic?.$toast?.error?.(__('Could not save the reusable block.'));
+    },
     editText({ id, path, value }) {
         const list = sets();
         const i = indexOf(list, id);

@@ -16,7 +16,7 @@
             {{# "entry" is a single entry (max_items: 1). Looping into it makes its fields
                 (heading, buttons, ...) the current context. Don't add scope="..." here:
                 the scope modifier only accepts arrays and throws on a single entry. #}}
-            <div{{ fbv:attrs :id="id" :type="type" :edit="entry:edit_url" }}>
+            <div{{ fbv:attrs :id="id" :type="type" :edit="entry:edit_url" :entry="entry:id" }}>
                 {{ entry }}
                     {{ partial:if_exists src="sets/blocks/{blueprint:handle}" }}
                 {{ /entry }}

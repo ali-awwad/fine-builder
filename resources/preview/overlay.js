@@ -167,7 +167,9 @@
     // ---- Inline text editing ---------------------------------------------------------------
     const editable = (node) => {
         const f = node?.closest?.('[data-fbv-field]');
-        return f && !f.closest('[data-fbv-reusable]') && !state.readOnly ? f : null;
+        // Reusable blocks are editable when they carry their entry id: edits save to that entry.
+        const reusable = f?.closest('[data-fbv-reusable]');
+        return f && (!reusable || reusable.dataset.fbvEntry) && !state.readOnly ? f : null;
     };
 
     const normalize = (text, multiline) => {
@@ -203,7 +205,14 @@
         state.editing = null;
         if (!save || value === field.dataset.fbvOriginal) return (field.innerHTML = field.dataset.fbvOriginalHtml);
         const block = field.closest('[data-fbv-set]');
-        if (block) send('editText', { id: block.dataset.fbvSet, path: field.dataset.fbvField, value });
+        if (!block) return;
+        const entry = block.dataset.fbvEntry;
+        if (!entry) return send('editText', { id: block.dataset.fbvSet, path: field.dataset.fbvField, value });
+        // Saved straight to the Blocks entry, so show the text now in every copy of that block on the page.
+        document
+            .querySelectorAll(`[data-fbv-entry="${CSS.escape(entry)}"] [data-fbv-field="${CSS.escape(field.dataset.fbvField)}"]`)
+            .forEach((f) => (f.textContent = value));
+        send('editReusable', { entry, path: field.dataset.fbvField, value });
     }
 
     document.addEventListener('keydown', (e) => {
@@ -240,7 +249,7 @@
             if (field) {
                 // Show the field in the form too (a button label shows its whole button), without taking focus.
                 const owner = field.parentElement.closest('a[data-fbv-open], button[data-fbv-open]');
-                if (state.editing !== field) send('openField', { id, path: owner?.dataset.fbvOpen || field.dataset.fbvField, focus: false });
+                if (state.editing !== field && !block.dataset.fbvReusable) send('openField', { id, path: owner?.dataset.fbvOpen || field.dataset.fbvField, focus: false });
                 startEditing(field);
             } else if (opener) send('openField', { id, path: opener.dataset.fbvOpen });
             else send('select', { id });
