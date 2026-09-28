@@ -9,6 +9,10 @@
         "ali awwad",
         "laravel"
     ],
+    "support": {
+        "issues": "https://github.com/ali-awwad/fine-builder/issues",
+        "source": "https://github.com/ali-awwad/fine-builder"
+    },
     "autoload": {
         "psr-4": {
             "AliAwwad\\FineBuilder\\": "src"

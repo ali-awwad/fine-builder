@@ -2,6 +2,8 @@
 
 return [
     'title' => 'Fine Builder',
+    'permission' => 'Configure Fine Builder',
+    'permission_description' => 'Install and overwrite the builder files, add blocks, and change the blueprints, Live Preview and template of collections.',
     'intro' => 'Build pages from blocks (hero, features, stats, CTA...) and edit them visually in Live Preview: click blocks to open them, edit text in place, move, duplicate, hide and add blocks from the page itself.',
     'files_heading' => 'Builder files',
     'files_intro' => 'Installs the block fieldsets, templates, icons and the Blocks collection (for reusable blocks) into your site, where you can restyle and extend them. Existing files are kept.',
