@@ -15,9 +15,11 @@ class FineBuilderBridgeTest extends TestCase
     }
 
     #[Test]
-    public function it_stores_nothing(): void
+    public function it_only_keeps_pending_reusable_edits(): void
     {
         $this->assertNull($this->fieldtype()->process('anything'));
+        $this->assertNull($this->fieldtype()->process([]));
+        $this->assertSame(['cta' => ['heading.text' => 'New']], $this->fieldtype()->process(['cta' => ['heading.text' => 'New']]));
         $this->assertNull($this->fieldtype()->preProcess('anything'));
     }
 

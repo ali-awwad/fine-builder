@@ -126,7 +126,7 @@
     font: 500 13px/1 ui-sans-serif, system-ui, sans-serif;
     cursor: pointer;
 }
-.fbv-ready [data-fbv-set] [data-fbv-field]:not([data-fbv-reusable] *):hover {
+.fbv-ready [data-fbv-set] [data-fbv-field]:not([data-fbv-reusable]:not([data-fbv-entry]) *):hover {
     outline: 1px dashed rgb(99 102 241 / 0.8);
     outline-offset: 3px;
     cursor: text;

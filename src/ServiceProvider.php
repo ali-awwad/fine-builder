@@ -31,6 +31,7 @@ class ServiceProvider extends AddonServiceProvider
 
     protected $listen = [
         \Statamic\Events\ResponseCreated::class => [Listeners\InjectVisualEditing::class],
+        \Statamic\Events\EntrySaving::class => [Listeners\SaveReusableEdits::class],
     ];
 
     protected $routes = [

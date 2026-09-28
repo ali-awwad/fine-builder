@@ -37,6 +37,10 @@ class FineBuilderVisualTagTest extends TestCase
             ' data-fbv-set="b1" data-fbv-type="block" data-fbv-reusable="/cp/edit"',
             $this->render('{{ fine_builder_visual:attrs id="b1" type="block" edit="/cp/edit" }}')
         );
+        $this->assertSame(
+            ' data-fbv-set="b1" data-fbv-type="block" data-fbv-reusable="/cp/edit" data-fbv-entry="e1"',
+            $this->render('{{ fine_builder_visual:attrs id="b1" type="block" edit="/cp/edit" entry="e1" }}')
+        );
         $this->assertSame(' data-fbv-open="image"', $this->render('{{ fine_builder_visual:open path="image" }}'));
     }
 

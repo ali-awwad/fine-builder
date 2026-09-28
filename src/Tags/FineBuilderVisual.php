@@ -2,6 +2,8 @@
 
 namespace AliAwwad\FineBuilder\Tags;
 
+use AliAwwad\FineBuilder\Support\ReusableEdits;
+use Statamic\Facades\Entry;
 use Statamic\Tags\Tags;
 
 /**
@@ -9,7 +11,7 @@ use Statamic\Tags\Tags;
  * Every method outputs nothing outside Live Preview, so the public site stays clean.
  *
  *   {{ fbv:root }}                         on the element wrapping the builder loop
- *   {{ fbv:attrs :id="id" :type="type" }}  on each set's wrapper (edit="..." for reusable blocks)
+ *   {{ fbv:attrs :id="id" :type="type" }}  on each set's wrapper (edit="..." entry="..." for reusable blocks)
  *   {{ fbv:field path="heading.text" }}    on an inline-editable text element (multiline="true" for textareas)
  *   {{ fbv:open path="image" }}            on an element whose click opens that field in the form
  *   {{ fbv:script }}                       before </body> (only when fine-builder.inject_overlay is off)
@@ -23,7 +25,16 @@ class FineBuilderVisual extends Tags
 
     public function root(): string
     {
-        return $this->live() ? ' data-fbv-root' : '';
+        if (! $this->live()) {
+            return '';
+        }
+
+        // Before the blocks render: show the page's unsaved reusable block edits.
+        if ($entry = Entry::find((string) $this->context->raw('id'))) {
+            ReusableEdits::preview(ReusableEdits::of($entry));
+        }
+
+        return ' data-fbv-root';
     }
 
     public function attrs(): string
@@ -39,6 +50,10 @@ class FineBuilderVisual extends Tags
 
         if ($edit = $this->params->get('edit')) {
             $attrs['data-fbv-reusable'] = (string) $edit;
+        }
+
+        if ($entry = $this->params->get('entry')) {
+            $attrs['data-fbv-entry'] = (string) $entry;
         }
 
         return collect($attrs)->map(fn ($value, $key) => $key.'="'.e($value).'"')->prepend('')->implode(' ');

@@ -20,6 +20,7 @@
 - Hover outlines each block. Click one to open and scroll to it in the form. Selecting a set in the form highlights it on the page.
 - Block toolbar: move up/down, duplicate, hide, delete, and add a block below from a searchable list.
 - Edit headings, subheadings, button labels and item text in place.
+- Reusable blocks can be edited in place too. The edits wait in the page's form and are written to the block entries when you save the page, so they show on every page using that block. Saving needs permission to edit those blocks.
 - Click an image, icon, button or pricing card to open that exact field in the form, with native pickers. **Block settings** lists every field of a block, including ones you can't click, such as a background video.
 - Live Preview updates only the blocks that changed, without reloading the page.
 - The form stays the source of truth: validation, revisions, permissions and saving all work as usual. Nothing is added to the public site.
@@ -97,6 +98,7 @@ Installing never overwrites your files, and never changes your `fine_builder.yam
 ```antlers
 <div{{ fbv:root }}>                       {{# wraps the builder loop (already in sets/fine_builder) #}}
 <div{{ fbv:attrs :id="id" :type="type" }}> {{# wraps each set #}}
+{{# a reusable block adds :edit="entry:edit_url" :entry="entry:id" #}}
 <h2{{ fbv:field path="heading.text" }}>    {{# text edited in place #}}
 <img{{ fbv:open path="image" }} ...>        {{# click opens the field #}}
 ```

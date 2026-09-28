@@ -223,6 +223,13 @@ const actions = {
             window.Statamic?.$toast?.error?.(e.message);
         }
     },
+    /** Reusable blocks live in their own entry: the edit waits in this field until the page is saved. */
+    editReusable({ entry, path, value }) {
+        const current = unref(ctx.values)?.[props.handle];
+        const pending = current && !Array.isArray(current) && typeof current === 'object' ? clone(current) : {};
+        pending[entry] = { ...(pending[entry] || {}), [path]: value };
+        ctx.setFieldValue(props.handle, pending);
+    },
     editText({ id, path, value }) {
         const list = sets();
         const i = indexOf(list, id);
@@ -267,6 +274,7 @@ onBeforeUnmount(() => {
         <ul style="list-style: disc; padding-inline-start: 1.25rem; margin-top: 0.25rem; line-height: 1.6">
             <li>{{ __('Click a block to open it here') }}</li>
             <li>{{ __('Click text to edit it in place') }}</li>
+            <li>{{ __('Text edits in reusable blocks are saved to those blocks when you save this page') }}</li>
             <li>{{ __('Use the block toolbar to move, duplicate, hide, delete or add blocks') }}</li>
         </ul>
     </div>
