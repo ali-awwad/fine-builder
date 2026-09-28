@@ -208,7 +208,7 @@
         if (!block) return;
         const entry = block.dataset.fbvEntry;
         if (!entry) return send('editText', { id: block.dataset.fbvSet, path: field.dataset.fbvField, value });
-        // Saved straight to the Blocks entry, so show the text now in every copy of that block on the page.
+        // Saved to the Blocks entry with the page; show the text now in every copy of that block on the page.
         document
             .querySelectorAll(`[data-fbv-entry="${CSS.escape(entry)}"] [data-fbv-field="${CSS.escape(field.dataset.fbvField)}"]`)
             .forEach((f) => (f.textContent = value));

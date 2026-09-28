@@ -2,6 +2,8 @@
 
 namespace AliAwwad\FineBuilder\Tags;
 
+use AliAwwad\FineBuilder\Support\ReusableEdits;
+use Statamic\Facades\Entry;
 use Statamic\Tags\Tags;
 
 /**
@@ -23,7 +25,16 @@ class FineBuilderVisual extends Tags
 
     public function root(): string
     {
-        return $this->live() ? ' data-fbv-root' : '';
+        if (! $this->live()) {
+            return '';
+        }
+
+        // Before the blocks render: show the page's unsaved reusable block edits.
+        if ($entry = Entry::find((string) $this->context->raw('id'))) {
+            ReusableEdits::preview(ReusableEdits::of($entry));
+        }
+
+        return ' data-fbv-root';
     }
 
     public function attrs(): string

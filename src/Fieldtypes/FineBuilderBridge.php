@@ -9,7 +9,8 @@ use Statamic\Fields\Fieldtype;
 
 /**
  * Invisible helper that connects the Live Preview canvas to the entry form.
- * It stores nothing: it only reads/writes the builder field through the publish container.
+ * It reads/writes the builder field through the publish container. Its own value holds the
+ * pending reusable block edits (see ReusableEdits), which saving the entry moves to the blocks.
  */
 class FineBuilderBridge extends Fieldtype
 {
@@ -38,7 +39,7 @@ class FineBuilderBridge extends Fieldtype
 
     public function process($data)
     {
-        return null;
+        return is_array($data) && $data ? $data : null;
     }
 
     public function preload()
