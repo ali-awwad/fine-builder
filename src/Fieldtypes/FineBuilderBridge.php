@@ -32,9 +32,10 @@ class FineBuilderBridge extends Fieldtype
         ];
     }
 
+    /** Pending edits come back only from a working copy (revisions): a real save removes them. */
     public function preProcess($data)
     {
-        return null;
+        return is_array($data) && $data ? $data : null;
     }
 
     public function process($data)

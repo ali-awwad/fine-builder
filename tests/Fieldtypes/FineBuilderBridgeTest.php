@@ -21,6 +21,7 @@ class FineBuilderBridgeTest extends TestCase
         $this->assertNull($this->fieldtype()->process([]));
         $this->assertSame(['cta' => ['heading.text' => 'New']], $this->fieldtype()->process(['cta' => ['heading.text' => 'New']]));
         $this->assertNull($this->fieldtype()->preProcess('anything'));
+        $this->assertSame(['cta' => ['heading.text' => 'New']], $this->fieldtype()->preProcess(['cta' => ['heading.text' => 'New']]));
     }
 
     #[Test]
