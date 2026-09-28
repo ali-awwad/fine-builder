@@ -20,7 +20,7 @@
 - Hover outlines each block. Click one to open and scroll to it in the form. Selecting a set in the form highlights it on the page.
 - Block toolbar: move up/down, duplicate, hide, delete, and add a block below from a searchable list.
 - Edit headings, subheadings, button labels and item text in place.
-- Reusable blocks can be edited in place too. The edits wait in the page's form and are written to the block entries when you save the page, so they show on every page using that block. Saving needs permission to edit those blocks.
+- Reusable blocks can be edited in place too. The edits wait in the page's form and are written to the block entries when you save the page, so they show on every page using that block. Saving needs permission to edit those blocks. With revisions on, they are kept in the working copy and written when the page is published.
 - Click an image, icon, button or pricing card to open that exact field in the form, with native pickers. **Block settings** lists every field of a block, including ones you can't click, such as a background video.
 - Live Preview updates only the blocks that changed, without reloading the page.
 - The form stays the source of truth: validation, revisions, permissions and saving all work as usual. Nothing is added to the public site.
